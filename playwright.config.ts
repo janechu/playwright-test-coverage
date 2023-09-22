@@ -1,6 +1,4 @@
-import { PlaywrightTestConfig } from '@playwright/test';
-
-const config: PlaywrightTestConfig = {
+const config = {
   webServer: {
     command: 'npm run start',
     port: 3000,
