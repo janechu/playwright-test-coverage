@@ -22,7 +22,7 @@ module.exports = env => {
                         loader: 'babel-loader',
                         options: {
                             presets: [
-                                ['@babel/preset-env', { targets: "defaults" }],
+                                ['@babel/preset-env'],
                                 ["@babel/preset-typescript"],
                                 ["@babel/preset-react"]
                             ],
