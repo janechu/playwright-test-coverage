@@ -1,33 +1,29 @@
 # Use [Istanbul](https://istanbul.js.org) coverage collection with [Playwright Test](https://playwright.dev/docs/test-intro)
 
-[![Coverage Status](https://coveralls.io/repos/github/mxschmitt/playwright-test-coverage/badge.svg)](https://coveralls.io/github/mxschmitt/playwright-test-coverage)
-[![CI](https://github.com/mxschmitt/playwright-test-coverage/actions/workflows/nodejs.yml/badge.svg)](https://github.com/mxschmitt/playwright-test-coverage/actions/workflows/nodejs.yml)
+This is a modification of [mxschmitt](https://github.com/mxschmitt)'s [create react app](https://github.com/mxschmitt/playwright-test-coverage) version, removing the create react app dependencies and relying only on webpack and updated as of 2023.
 
-This example demonstrates how to use [babel-plugin-istanbul](https://github.com/istanbuljs/babel-plugin-istanbul) to collect coverage data during runtime with your end-to-end tests which will be stored on the filesystem. When applying the shown parts, you are able to view the coverage report e.g. as HTML, or convert it to the `lcov` format for upload to [Coveralls](https://coveralls.io/) or other similar providers. In this example, we are using GitHub Actions to run the tests and upload them to Coveralls.
+## Notes
 
-## Prerequisites
+If you are using TypeScript decorators which might not be compatible with the [@babel/plugin-proposal-decorators](https://babeljs.io/docs/babel-plugin-proposal-decorators) and are using the `ts-loader` instead, simply use both of them.
 
-- The web application which you are using needs to have [`babel-plugin-istanbul`](https://github.com/istanbuljs/babel-plugin-istanbul) configured during the build process.
-- It's recommended to only enable it during end-to-end testing, for example by checking a variable to determine if it should be enabled.
-- You could also add it only when the dev server `NODE_ENV=development` is used.
-
-## Usage
-
-- Place [`baseFixtures.ts`](https://github.com/mxschmitt/playwright-test-coverage/blob/main/e2e/baseFixtures.ts) into your test directory. Instead of requiring `@playwright/test` to get the test object, use `./baseFixtures`.
-- This will collect the corresponding coverage files into the `.nyc_output` directory which can be used from the [Istanbul CLI](https://github.com/istanbuljs/nyc).
-- For an example test, see [App.test.ts](/e2e/App.test.ts)
-
-## Coverage formats
-
-Helpful commands are the following:
-
-- `npx nyc report --reporter=html` -> Writes an HTML report to `coverage/index.html`.
-- `npx nyc report --reporter=lcov` -> commonly used to upload to Coveralls or [Codecov](https://about.codecov.io/).
-- `npx nyc report --reporter=text` -> CLI output how the current code coverage per file and statement will look like.
-
-## Used tools
-
-- [create-react-app](https://create-react-app.dev) - tooling and bundling for React
-- [react-app-rewired](https://www.npmjs.com/package/react-app-rewired) - to modify the React babel config without ejecting it
-- [babel-plugin-istanbul](https://github.com/istanbuljs/babel-plugin-istanbul) - to add coverage information
-- [nyc](https://github.com/istanbuljs/nyc) - Istanbul CLI to generate lcov coverage
+Example modification to `webpack.config.js`:
+```js
+{
+    test: /\.(ts|tsx)$/,
+    exclude: /node_modules/,
+    use: [
+        /**
+         * loaders start being used from the end of the array
+         */
+        {
+            loader: 'babel-loader',
+            options: {
+                plugins: ['istanbul']
+            }
+        },
+        {
+            loader: 'ts-loader'
+        }
+    ]
+}
+```
