@@ -27,3 +27,11 @@ Example modification to `webpack.config.js`:
     ]
 }
 ```
+
+You will also need to add `sourceMap` to the tsconfig which allow the accurate mapping to the original file lines:
+
+```json
+{
+    "sourceMap": true
+}
+```
